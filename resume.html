@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume – Carter Walker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-brand">CW</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="resume.html" class="active">Resume</a></li>
+      <li><a href="hobbies.html">Hobbies</a></li>
+      <li><a href="game.html">Game</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Resume</h1>
+    <p>Carter Walker &nbsp;·&nbsp; Orem, Utah &nbsp;·&nbsp; (480) 570-8429 &nbsp;·&nbsp; Carterjwalk7@gmail.com</p>
+  </div>
+
+  <div class="resume-body">
+
+    <!-- EXPERIENCE -->
+    <div class="resume-section">
+      <h2>Experience</h2>
+
+      <div class="resume-item">
+        <div class="resume-item-header">
+          <div>
+            <h3>Zeo Energy — Virginia</h3>
+            <span class="role">Sales Representative</span>
+          </div>
+          <span class="date">June 2025 – Present</span>
+        </div>
+        <ul>
+          <li>Engaged with homeowners through door-to-door outreach to introduce solar energy programs.</li>
+          <li>Scheduled qualified appointments for consultants by identifying customer needs and building rapport.</li>
+          <li>Explained solar financing and program benefits in clear, easy-to-understand terms.</li>
+          <li>Strengthened communication and persuasion skills while consistently meeting appointment-setting goals.</li>
+        </ul>
+      </div>
+
+      <div class="resume-item">
+        <div class="resume-item-header">
+          <div>
+            <h3>Revamp Fulfillment — Orem, Utah</h3>
+            <span class="role">Order Fulfillment Specialist</span>
+          </div>
+          <span class="date">July 2024 – September 2024</span>
+        </div>
+        <ul>
+          <li>Accurately sorted, packaged, and prepared products for shipment to customers.</li>
+          <li>Coordinated with team members to meet daily order quotas and shipping deadlines.</li>
+          <li>Maintained inventory accuracy by tracking, labeling, and processing orders.</li>
+          <li>Ensured quality control and compliance with company shipping standards.</li>
+        </ul>
+      </div>
+
+      <div class="resume-item">
+        <div class="resume-item-header">
+          <div>
+            <h3>BYU Track &amp; Field</h3>
+            <span class="role">Student-Athlete</span>
+          </div>
+          <span class="date">2022 – Present</span>
+        </div>
+        <ul>
+          <li>Balance competitive D1 athletics with full academic coursework, demonstrating discipline and time management.</li>
+          <li>Build teamwork, leadership, and resilience through training and competition.</li>
+          <li>Commit to personal growth and goal achievement in both academic and athletic settings.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="resume-section">
+      <h2>Education</h2>
+      <div class="resume-item">
+        <div class="resume-item-header">
+          <div>
+            <h3>Brigham Young University — Provo, Utah</h3>
+            <span class="role">Pre-Business</span>
+          </div>
+          <span class="date">2022 – Present</span>
+        </div>
+      </div>
+      <div class="resume-item">
+        <div class="resume-item-header">
+          <div>
+            <h3>Orem High School — Orem, Utah</h3>
+            <span class="role">High School Diploma</span>
+          </div>
+          <span class="date">Graduated May 2022</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="resume-section">
+      <h2>Skills</h2>
+      <table class="skills-table">
+        <thead>
+          <tr>
+            <th>Skill</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Communication</td>
+            <td>Strong interpersonal and communication skills; clear and simple communicator</td>
+          </tr>
+          <tr>
+            <td>Adaptability</td>
+            <td>Quick learner; able to grasp and apply new concepts rapidly</td>
+          </tr>
+          <tr>
+            <td>Coachability</td>
+            <td>Teachable and receptive to feedback</td>
+          </tr>
+          <tr>
+            <td>Teamwork</td>
+            <td>Reliable team player with strong work ethic</td>
+          </tr>
+          <tr>
+            <td>Customer Relations</td>
+            <td>Customer service and relationship building experience</td>
+          </tr>
+          <tr>
+            <td>Languages</td>
+            <td>English (native), Portuguese (fluent)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="resume-section">
+      <h2>Contact Me</h2>
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div>
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="John Smith" required />
+        </div>
+        <div>
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="john@email.com" required />
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Say hello..." required></textarea>
+        </div>
+        <button type="submit" class="btn" style="margin-top:8px;">Send Message</button>
+        <p id="form-msg" style="color:#2e7d52; font-size:0.9rem; display:none;">Message sent! I'll be in touch.</p>
+      </form>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Carter Walker &nbsp;·&nbsp; Orem, Utah &nbsp;·&nbsp; <a href="mailto:Carterjwalk7@gmail.com">Carterjwalk7@gmail.com</a></p>
+    <p class="footer-copy">&copy; 2025 Carter Walker</p>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('form-msg').style.display = 'block';
+      e.target.reset();
+    }
+  </script>
+
+</body>
+</html>

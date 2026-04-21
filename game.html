@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game – Carter Walker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-brand">CW</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="hobbies.html">Hobbies</a></li>
+      <li><a href="game.html" class="active">Game</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Basketball Trivia</h1>
+    <p>Think you know the game? Prove it.</p>
+  </div>
+
+  <div class="game-body">
+    <p>10 questions. No googling. Let's see what you've got.</p>
+
+    <div id="game-container">
+      <div id="game-score">Score: 0 / 10</div>
+      <div id="game-question">Press Start to begin!</div>
+      <div id="game-options"></div>
+      <div id="game-feedback"></div>
+      <button class="btn" id="start-btn" onclick="startGame()">Start Game</button>
+      <button class="btn" id="next-btn" onclick="nextQuestion()" style="display:none; margin-left:12px;">Next</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Carter Walker &nbsp;·&nbsp; Orem, Utah &nbsp;·&nbsp; <a href="mailto:Carterjwalk7@gmail.com">Carterjwalk7@gmail.com</a></p>
+    <p class="footer-copy">&copy; 2025 Carter Walker</p>
+  </footer>
+
+  <script>
+    const questions = [
+      { q: "How many points is a shot behind the three-point line worth?", options: ["2", "3", "4", "1"], answer: "3" },
+      { q: "How many players are on the court per team at one time?", options: ["4", "6", "5", "7"], answer: "5" },
+      { q: "Which player has won the most NBA championships?", options: ["LeBron James", "Bill Russell", "Michael Jordan", "Kareem Abdul-Jabbar"], answer: "Bill Russell" },
+      { q: "How long is an NBA game (regulation)?", options: ["40 minutes", "60 minutes", "48 minutes", "36 minutes"], answer: "48 minutes" },
+      { q: "What city do the Jazz play in?", options: ["Denver", "Salt Lake City", "Phoenix", "Las Vegas"], answer: "Salt Lake City" },
+      { q: "What is the height of an NBA basketball hoop?", options: ["9 feet", "10 feet", "11 feet", "8.5 feet"], answer: "10 feet" },
+      { q: "Who holds the record for most points scored in a single NBA game?", options: ["Michael Jordan", "LeBron James", "Kobe Bryant", "Wilt Chamberlain"], answer: "Wilt Chamberlain" },
+      { q: "What does BYU stand for?", options: ["Brigham Young University", "Brigham Youth University", "Baptist Young University", "Brigham Young Union"], answer: "Brigham Young University" },
+      { q: "How many seconds does a team have to attempt a shot (NBA shot clock)?", options: ["30", "35", "24", "20"], answer: "24" },
+      { q: "How many fouls before a player fouls out in the NBA?", options: ["5", "4", "7", "6"], answer: "6" }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = false;
+
+    function startGame() {
+      current = 0;
+      score = 0;
+      answered = false;
+      document.getElementById('start-btn').style.display = 'none';
+      document.getElementById('game-feedback').textContent = '';
+      updateScore();
+      showQuestion();
+    }
+
+    function showQuestion() {
+      if (current >= questions.length) {
+        endGame();
+        return;
+      }
+      answered = false;
+      const q = questions[current];
+      document.getElementById('game-question').textContent = `Q${current + 1}: ${q.q}`;
+      document.getElementById('game-feedback').textContent = '';
+      document.getElementById('next-btn').style.display = 'none';
+
+      const opts = document.getElementById('game-options');
+      opts.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => selectAnswer(opt, btn);
+        opts.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(selected, btn) {
+      if (answered) return;
+      answered = true;
+      const correct = questions[current].answer;
+      const allBtns = document.querySelectorAll('.option-btn');
+
+      allBtns.forEach(b => {
+        b.style.pointerEvents = 'none';
+        if (b.textContent === correct) b.classList.add('correct');
+      });
+
+      if (selected === correct) {
+        score++;
+        document.getElementById('game-feedback').textContent = '✓ Correct!';
+        document.getElementById('game-feedback').style.color = '#4caf81';
+      } else {
+        btn.classList.add('wrong');
+        document.getElementById('game-feedback').textContent = `✗ Nope — the answer was ${correct}.`;
+        document.getElementById('game-feedback').style.color = '#e07070';
+      }
+
+      updateScore();
+      document.getElementById('next-btn').style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      current++;
+      showQuestion();
+    }
+
+    function updateScore() {
+      document.getElementById('game-score').textContent = `Score: ${score} / ${questions.length}`;
+    }
+
+    function endGame() {
+      document.getElementById('game-question').textContent = `Game Over! You scored ${score} out of ${questions.length}.`;
+      document.getElementById('game-options').innerHTML = '';
+      document.getElementById('game-feedback').textContent = score >= 8 ? '🏆 Hooper confirmed.' : score >= 5 ? '👍 Not bad.' : '📚 Go watch more games.';
+      document.getElementById('game-feedback').style.color = '#aac8e8';
+      document.getElementById('next-btn').style.display = 'none';
+      const startBtn = document.getElementById('start-btn');
+      startBtn.textContent = 'Play Again';
+      startBtn.style.display = 'inline-block';
+    }
+  </script>
+
+</body>
+</html>

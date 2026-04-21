@@ -3,138 +3,477 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Game – Carter Walker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Shot Clock Challenge – Carter Walker</title>
+  <style>
+    :root {
+      --navy: #1B2A4A;
+      --navy-dark: #111D33;
+      --accent: #4A7FBF;
+      --accent-light: #7AAAD4;
+      --grey-mid: #C5CDD9;
+      --grey-dark: #8A96A8;
+      --white: #F4F6FA;
+      --green: #2e7d52;
+      --red: #8b2635;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: var(--navy-dark);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    nav {
+      background: #0a1220;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 56px;
+      border-bottom: 2px solid var(--accent);
+    }
+    .nav-brand { font-size: 1.4rem; font-weight: bold; color: var(--white); letter-spacing: 0.1em; text-decoration: none; }
+    .nav-links { list-style: none; display: flex; gap: 24px; }
+    .nav-links a { color: var(--grey-mid); text-decoration: none; font-size: 0.82rem; font-weight: bold; letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+
+    .game-header {
+      text-align: center;
+      padding: 40px 24px 20px;
+    }
+    .game-header h1 { font-size: 2.8rem; font-weight: 900; letter-spacing: 0.04em; color: var(--white); }
+    .game-header p { color: var(--grey-mid); font-size: 0.95rem; margin-top: 8px; }
+
+    /* SCOREBOARD */
+    .scoreboard {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 20px;
+      background: #0a1220;
+      border-top: 1px solid #243558;
+      border-bottom: 1px solid #243558;
+      margin-bottom: 24px;
+    }
+    .board-item { text-align: center; }
+    .board-num { font-size: 2.4rem; font-weight: 900; color: var(--white); line-height: 1; }
+    .board-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-dark); margin-top: 2px; }
+    .board-num.clock { color: #f0c040; }
+    .board-num.clock.urgent { color: #e05050; animation: pulse 0.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+
+    /* COURT */
+    .court-area {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+    }
+
+    .question-box {
+      background: #1a2d4a;
+      border: 2px solid var(--accent);
+      padding: 28px 32px;
+      text-align: center;
+      margin-bottom: 20px;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #question-text {
+      font-size: 1.35rem;
+      font-weight: bold;
+      line-height: 1.4;
+      color: var(--white);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .opt-btn {
+      background: #243558;
+      color: var(--white);
+      border: 2px solid #3a4f70;
+      padding: 16px 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .opt-btn:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); }
+    .opt-btn.correct { background: var(--green); border-color: var(--green); }
+    .opt-btn.wrong { background: var(--red); border-color: var(--red); }
+    .opt-btn:disabled { cursor: default; }
+
+    #feedback {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      min-height: 28px;
+      margin-bottom: 16px;
+      color: var(--grey-mid);
+    }
+
+    .action-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .game-btn {
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      padding: 13px 28px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .game-btn:hover { background: #3a6ea8; }
+    .game-btn.secondary { background: #243558; }
+    .game-btn.secondary:hover { background: #3a4f70; }
+
+    /* STREAK */
+    .streak-bar {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .streak-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #243558; border: 2px solid #3a4f70;
+      transition: all 0.2s;
+    }
+    .streak-dot.hit { background: var(--green); border-color: var(--green); }
+    .streak-dot.miss { background: var(--red); border-color: var(--red); }
+
+    /* END SCREEN */
+    #end-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 24px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    #end-screen h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 12px; }
+    #end-screen .final-score { font-size: 4rem; font-weight: 900; color: var(--accent-light); line-height: 1; margin: 16px 0; }
+    #end-screen .grade { font-size: 1.1rem; color: var(--grey-mid); margin-bottom: 28px; }
+
+    /* LEVEL BADGE */
+    .level-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      padding: 3px 10px;
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    /* Difficulty selector */
+    .diff-select {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 16px 0 24px;
+    }
+    .diff-btn {
+      background: #243558;
+      color: var(--grey-mid);
+      border: 2px solid #3a4f70;
+      padding: 8px 20px;
+      font-size: 0.82rem;
+      font-weight: bold;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .diff-btn.selected { background: var(--accent); color: var(--white); border-color: var(--accent); }
+
+    footer {
+      background: #0a1220;
+      color: var(--grey-dark);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8rem;
+      border-top: 1px solid #243558;
+      margin-top: 40px;
+    }
+    footer a { color: var(--accent-light); text-decoration: none; }
+  </style>
 </head>
 <body>
 
   <nav>
-    <div class="nav-brand">CW</div>
+    <a class="nav-brand" href="index.html">CW</a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="resume.html">Resume</a></li>
-      <li><a href="hobbies.html">Hobbies</a></li>
+      <li><a href="scratch.html">Basketball</a></li>
       <li><a href="game.html" class="active">Game</a></li>
     </ul>
   </nav>
 
-  <div class="page-header">
-    <h1>Basketball Trivia</h1>
-    <p>Think you know the game? Prove it.</p>
+  <div class="game-header">
+    <h1>🏀 Shot Clock Challenge</h1>
+    <p>Answer before the shot clock hits zero — or it's a violation!</p>
   </div>
 
-  <div class="game-body">
-    <p>10 questions. No googling. Let's see what you've got.</p>
-
-    <div id="game-container">
-      <div id="game-score">Score: 0 / 10</div>
-      <div id="game-question">Press Start to begin!</div>
-      <div id="game-options"></div>
-      <div id="game-feedback"></div>
-      <button class="btn" id="start-btn" onclick="startGame()">Start Game</button>
-      <button class="btn" id="next-btn" onclick="nextQuestion()" style="display:none; margin-left:12px;">Next</button>
+  <!-- SCOREBOARD -->
+  <div class="scoreboard">
+    <div class="board-item">
+      <div class="board-num" id="score-display">0</div>
+      <div class="board-label">Score</div>
+    </div>
+    <div class="board-item">
+      <div class="board-num clock" id="clock-display">24</div>
+      <div class="board-label">Shot Clock</div>
+    </div>
+    <div class="board-item">
+      <div class="board-num" id="q-display">0/10</div>
+      <div class="board-label">Question</div>
+    </div>
+    <div class="board-item">
+      <div class="board-num" id="streak-display">0</div>
+      <div class="board-label">Streak 🔥</div>
     </div>
   </div>
 
+  <!-- START SCREEN -->
+  <div id="start-screen" class="court-area" style="text-align:center; padding-top:20px;">
+    <p style="color:var(--grey-mid); margin-bottom:20px; font-size:0.97rem;">Choose your difficulty. The shot clock gets shorter as it gets harder.</p>
+    <div class="diff-select">
+      <button class="diff-btn selected" onclick="setDiff('rookie', this)">Rookie <br><span style="font-size:0.7rem; color:#888;">24 sec</span></button>
+      <button class="diff-btn" onclick="setDiff('starter', this)">Starter <br><span style="font-size:0.7rem; color:#888;">15 sec</span></button>
+      <button class="diff-btn" onclick="setDiff('allstar', this)">All-Star <br><span style="font-size:0.7rem; color:#888;">8 sec</span></button>
+    </div>
+    <button class="game-btn" onclick="startGame()">Start Game</button>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="game-screen" class="court-area" style="display:none;">
+    <div class="streak-bar" id="streak-bar"></div>
+    <div class="question-box">
+      <div id="question-text">Loading...</div>
+    </div>
+    <div class="options-grid" id="options-grid"></div>
+    <div id="feedback"></div>
+    <div class="action-row">
+      <button class="game-btn secondary" id="next-btn" onclick="nextQ()" style="display:none;">Next Possession →</button>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div id="end-screen">
+    <h2>Final Buzzer!</h2>
+    <div class="final-score" id="final-score">0</div>
+    <div class="grade" id="final-grade"></div>
+    <button class="game-btn" onclick="resetGame()">Play Again</button>
+  </div>
+
   <footer>
-    <p>Carter Walker &nbsp;·&nbsp; Orem, Utah &nbsp;·&nbsp; <a href="mailto:Carterjwalk7@gmail.com">Carterjwalk7@gmail.com</a></p>
-    <p class="footer-copy">&copy; 2025 Carter Walker</p>
+    <p>Carter Walker · <a href="mailto:Carterjwalk7@gmail.com">Carterjwalk7@gmail.com</a> · &copy; 2025</p>
   </footer>
 
   <script>
-    const questions = [
-      { q: "How many points is a shot behind the three-point line worth?", options: ["2", "3", "4", "1"], answer: "3" },
-      { q: "How many players are on the court per team at one time?", options: ["4", "6", "5", "7"], answer: "5" },
-      { q: "Which player has won the most NBA championships?", options: ["LeBron James", "Bill Russell", "Michael Jordan", "Kareem Abdul-Jabbar"], answer: "Bill Russell" },
-      { q: "How long is an NBA game (regulation)?", options: ["40 minutes", "60 minutes", "48 minutes", "36 minutes"], answer: "48 minutes" },
-      { q: "What city do the Jazz play in?", options: ["Denver", "Salt Lake City", "Phoenix", "Las Vegas"], answer: "Salt Lake City" },
-      { q: "What is the height of an NBA basketball hoop?", options: ["9 feet", "10 feet", "11 feet", "8.5 feet"], answer: "10 feet" },
-      { q: "Who holds the record for most points scored in a single NBA game?", options: ["Michael Jordan", "LeBron James", "Kobe Bryant", "Wilt Chamberlain"], answer: "Wilt Chamberlain" },
-      { q: "What does BYU stand for?", options: ["Brigham Young University", "Brigham Youth University", "Baptist Young University", "Brigham Young Union"], answer: "Brigham Young University" },
-      { q: "How many seconds does a team have to attempt a shot (NBA shot clock)?", options: ["30", "35", "24", "20"], answer: "24" },
-      { q: "How many fouls before a player fouls out in the NBA?", options: ["5", "4", "7", "6"], answer: "6" }
+    const ALL_QUESTIONS = [
+      { q: "How many points is a shot behind the arc worth?", opts: ["1","2","3","4"], a: "3" },
+      { q: "How many players per team are on the court at once?", opts: ["4","5","6","7"], a: "5" },
+      { q: "Who holds the NBA record for most points in a single game?", opts: ["Kobe Bryant","Michael Jordan","LeBron James","Wilt Chamberlain"], a: "Wilt Chamberlain" },
+      { q: "How long is the NBA shot clock?", opts: ["24 sec","30 sec","20 sec","35 sec"], a: "24 sec" },
+      { q: "What city do the Utah Jazz play in?", opts: ["Denver","Las Vegas","Salt Lake City","Provo"], a: "Salt Lake City" },
+      { q: "How tall is an NBA basketball hoop?", opts: ["9 ft","10 ft","11 ft","8.5 ft"], a: "10 ft" },
+      { q: "How many fouls before a player fouls out in the NBA?", opts: ["4","5","6","7"], a: "6" },
+      { q: "Which team has the most NBA championships?", opts: ["LA Lakers","Chicago Bulls","Boston Celtics","Golden State Warriors"], a: "Boston Celtics" },
+      { q: "How many seconds does a team have to advance past half court in the NBA?", opts: ["5","8","10","12"], a: "8" },
+      { q: "What does MVP stand for?", opts: ["Most Valuable Player","Most Versatile Player","Most Visible Player","Most Voted Player"], a: "Most Valuable Player" },
+      { q: "Who won the 2023 NBA championship?", opts: ["Golden State Warriors","Miami Heat","Denver Nuggets","Boston Celtics"], a: "Denver Nuggets" },
+      { q: "What is a 'double-double' in basketball?", opts: ["Scoring 20+ pts twice","Two players with 10+ in a stat","10+ in two different stat categories","Two consecutive dunks"], a: "10+ in two different stat categories" },
+      { q: "How many regulation quarters are in an NBA game?", opts: ["3","4","5","2"], a: "4" },
+      { q: "Which player is known as 'The Greek Freak'?", opts: ["Nikola Jokic","Joel Embiid","Luka Doncic","Giannis Antetokounmpo"], a: "Giannis Antetokounmpo" },
+      { q: "How long is each quarter in an NBA game?", opts: ["10 min","12 min","15 min","8 min"], a: "12 min" },
     ];
 
+    let difficulty = 'rookie';
+    let clockTime = 24;
+    let questions = [];
     let current = 0;
     let score = 0;
+    let streak = 0;
+    let timer = null;
+    let timeLeft = 24;
     let answered = false;
+    let results = [];
+
+    function setDiff(d, btn) {
+      difficulty = d;
+      document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      clockTime = d === 'rookie' ? 24 : d === 'starter' ? 15 : 8;
+    }
+
+    function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
 
     function startGame() {
-      current = 0;
-      score = 0;
-      answered = false;
-      document.getElementById('start-btn').style.display = 'none';
-      document.getElementById('game-feedback').textContent = '';
-      updateScore();
+      questions = shuffle(ALL_QUESTIONS).slice(0, 10);
+      current = 0; score = 0; streak = 0; results = [];
+      document.getElementById('start-screen').style.display = 'none';
+      document.getElementById('end-screen').style.display = 'none';
+      document.getElementById('game-screen').style.display = 'block';
+      buildStreakBar();
       showQuestion();
+    }
+
+    function buildStreakBar() {
+      const bar = document.getElementById('streak-bar');
+      bar.innerHTML = '';
+      for (let i = 0; i < 10; i++) {
+        const d = document.createElement('div');
+        d.className = 'streak-dot';
+        d.id = `dot-${i}`;
+        bar.appendChild(d);
+      }
     }
 
     function showQuestion() {
-      if (current >= questions.length) {
-        endGame();
-        return;
-      }
       answered = false;
       const q = questions[current];
-      document.getElementById('game-question').textContent = `Q${current + 1}: ${q.q}`;
-      document.getElementById('game-feedback').textContent = '';
+      document.getElementById('question-text').textContent = `Q${current+1}: ${q.q}`;
+      document.getElementById('q-display').textContent = `${current+1}/10`;
+      document.getElementById('feedback').textContent = '';
       document.getElementById('next-btn').style.display = 'none';
 
-      const opts = document.getElementById('game-options');
-      opts.innerHTML = '';
-      q.options.forEach(opt => {
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+      shuffle(q.opts).forEach(opt => {
         const btn = document.createElement('button');
-        btn.className = 'option-btn';
+        btn.className = 'opt-btn';
         btn.textContent = opt;
-        btn.onclick = () => selectAnswer(opt, btn);
-        opts.appendChild(btn);
+        btn.onclick = () => pick(opt, btn);
+        grid.appendChild(btn);
       });
+
+      startClock();
     }
 
-    function selectAnswer(selected, btn) {
+    function startClock() {
+      clearInterval(timer);
+      timeLeft = clockTime;
+      updateClock();
+      timer = setInterval(() => {
+        timeLeft--;
+        updateClock();
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          timeExpired();
+        }
+      }, 1000);
+    }
+
+    function updateClock() {
+      const el = document.getElementById('clock-display');
+      el.textContent = timeLeft;
+      el.className = 'board-num clock' + (timeLeft <= 5 ? ' urgent' : '');
+    }
+
+    function timeExpired() {
       if (answered) return;
       answered = true;
-      const correct = questions[current].answer;
-      const allBtns = document.querySelectorAll('.option-btn');
-
-      allBtns.forEach(b => {
-        b.style.pointerEvents = 'none';
+      const correct = questions[current].a;
+      document.querySelectorAll('.opt-btn').forEach(b => {
+        b.disabled = true;
         if (b.textContent === correct) b.classList.add('correct');
       });
-
-      if (selected === correct) {
-        score++;
-        document.getElementById('game-feedback').textContent = '✓ Correct!';
-        document.getElementById('game-feedback').style.color = '#4caf81';
-      } else {
-        btn.classList.add('wrong');
-        document.getElementById('game-feedback').textContent = `✗ Nope — the answer was ${correct}.`;
-        document.getElementById('game-feedback').style.color = '#e07070';
-      }
-
-      updateScore();
+      document.getElementById('feedback').textContent = `⏰ Shot clock violation! Answer was: ${correct}`;
+      document.getElementById('feedback').style.color = '#e07070';
+      streak = 0;
+      results.push(false);
+      document.getElementById(`dot-${current}`).classList.add('miss');
+      updateStreak();
       document.getElementById('next-btn').style.display = 'inline-block';
     }
 
-    function nextQuestion() {
+    function pick(selected, btn) {
+      if (answered) return;
+      answered = true;
+      clearInterval(timer);
+
+      const correct = questions[current].a;
+      document.querySelectorAll('.opt-btn').forEach(b => {
+        b.disabled = true;
+        if (b.textContent === correct) b.classList.add('correct');
+      });
+
+      const timeBonus = Math.ceil(timeLeft / clockTime * 3);
+
+      if (selected === correct) {
+        const pts = 2 + timeBonus;
+        score += pts;
+        streak++;
+        results.push(true);
+        document.getElementById(`dot-${current}`).classList.add('hit');
+        document.getElementById('feedback').textContent = `✓ Bucket! +${pts} pts (${timeBonus > 1 ? 'speed bonus!' : ''})`;
+        document.getElementById('feedback').style.color = '#4caf81';
+      } else {
+        btn.classList.add('wrong');
+        streak = 0;
+        results.push(false);
+        document.getElementById(`dot-${current}`).classList.add('miss');
+        document.getElementById('feedback').textContent = `✗ Blocked. Answer: ${correct}`;
+        document.getElementById('feedback').style.color = '#e07070';
+      }
+
+      document.getElementById('score-display').textContent = score;
+      updateStreak();
+      document.getElementById('next-btn').style.display = 'inline-block';
+    }
+
+    function updateStreak() {
+      document.getElementById('streak-display').textContent = streak;
+    }
+
+    function nextQ() {
       current++;
+      if (current >= 10) { endGame(); return; }
       showQuestion();
     }
 
-    function updateScore() {
-      document.getElementById('game-score').textContent = `Score: ${score} / ${questions.length}`;
+    function endGame() {
+      clearInterval(timer);
+      document.getElementById('game-screen').style.display = 'none';
+      document.getElementById('end-screen').style.display = 'block';
+      document.getElementById('final-score').textContent = score;
+      const hits = results.filter(Boolean).length;
+      let grade = '';
+      if (hits >= 9) grade = "🏆 Hall of Famer. Absolutely legendary.";
+      else if (hits >= 7) grade = "⭐ All-Star level. Respect.";
+      else if (hits >= 5) grade = "👍 Solid starter. Keep grinding.";
+      else if (hits >= 3) grade = "📚 Bench player. More film study needed.";
+      else grade = "😬 DNP – Did Not Perform. Go watch some games.";
+      document.getElementById('final-grade').textContent = `${hits}/10 correct — ${grade}`;
     }
 
-    function endGame() {
-      document.getElementById('game-question').textContent = `Game Over! You scored ${score} out of ${questions.length}.`;
-      document.getElementById('game-options').innerHTML = '';
-      document.getElementById('game-feedback').textContent = score >= 8 ? '🏆 Hooper confirmed.' : score >= 5 ? '👍 Not bad.' : '📚 Go watch more games.';
-      document.getElementById('game-feedback').style.color = '#aac8e8';
-      document.getElementById('next-btn').style.display = 'none';
-      const startBtn = document.getElementById('start-btn');
-      startBtn.textContent = 'Play Again';
-      startBtn.style.display = 'inline-block';
+    function resetGame() {
+      document.getElementById('end-screen').style.display = 'none';
+      document.getElementById('start-screen').style.display = 'block';
+      document.getElementById('score-display').textContent = '0';
+      document.getElementById('clock-display').textContent = clockTime;
+      document.getElementById('q-display').textContent = '0/10';
+      document.getElementById('streak-display').textContent = '0';
     }
   </script>
 

@@ -1,0 +1,347 @@
+/* ================================
+   scratch.css — Carter Walker
+   Custom stylesheet for basketball
+   from-scratch page
+   ================================ */
+
+/* --- CSS Variables --- */
+:root {
+  --navy: #1B2A4A;
+  --navy-dark: #111D33;
+  --navy-mid: #243558;
+  --accent: #4A7FBF;
+  --accent-light: #7AAAD4;
+  --grey-light: #E8ECF2;
+  --grey-mid: #C5CDD9;
+  --grey-dark: #8A96A8;
+  --white: #F4F6FA;
+  --text: #1B2A4A;
+  --text-light: #5A6A80;
+}
+
+/* --- Reset --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* --- Body (font family style) --- */
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background-color: var(--white);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ================================
+   DIV 1: NAV
+   ================================ */
+.scratch-nav {
+  background-color: var(--navy-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 58px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--accent);
+}
+
+.nav-brand {
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--white);
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links a {
+  color: var(--grey-mid);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+  transition: color 0.2s;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--white);
+  border-bottom-color: var(--accent-light);
+}
+
+/* ================================
+   DIV 2: HERO
+   ================================ */
+.scratch-hero {
+  background-color: var(--navy);
+  background-image: linear-gradient(135deg, #111D33 0%, #1B2A4A 60%, #243558 100%);
+  padding: 80px 48px 60px;
+  text-align: center;
+  color: var(--white);
+}
+
+.scratch-hero h1 {
+  font-family: 'Georgia', serif;
+  font-size: 5rem;
+  font-weight: bold;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--grey-mid);
+  margin-bottom: 32px;
+  font-style: italic;
+}
+
+/* Anchor quick-links inside hero */
+.anchor-links {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.anchor-links a {
+  color: var(--accent-light);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+  border: 1px solid var(--accent);
+  padding: 6px 14px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.anchor-links a:hover {
+  background: var(--accent);
+  color: var(--white);
+}
+
+/* ================================
+   DIV 3: CONTENT SECTIONS
+   ================================ */
+.scratch-section {
+  padding: 72px 48px;
+}
+
+.dark-section {
+  background-color: var(--navy);
+  color: var(--white);
+}
+
+.dark-section h2 {
+  color: var(--white);
+  border-bottom-color: var(--accent);
+}
+
+.dark-section p {
+  color: var(--grey-mid);
+}
+
+/* Container within sections */
+.scratch-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Section headings (font color style) */
+h2 {
+  font-family: 'Georgia', serif;
+  font-size: 2.4rem;
+  color: var(--navy);
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 10px;
+  margin-bottom: 28px;
+  display: inline-block;
+}
+
+/* Body text (font color style) */
+p {
+  font-size: 0.97rem;
+  color: var(--text-light);
+  margin-bottom: 14px;
+  line-height: 1.75;
+}
+
+.section-intro {
+  font-size: 1rem;
+  color: var(--grey-mid);
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+/* Two-column layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* Image style */
+.scratch-img {
+  width: 100%;
+  max-width: 320px;
+  display: block;
+  margin: 0 auto;
+  border: 3px solid var(--accent);
+}
+
+/* ================================
+   ORDERED + UNORDERED NESTED LISTS
+   ================================ */
+.main-list {
+  padding-left: 24px;
+  color: var(--grey-mid);
+}
+
+.main-list > li {
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: var(--white);
+  margin-bottom: 18px;
+  font-family: 'Georgia', serif;
+}
+
+.sub-list {
+  list-style-type: disc;
+  padding-left: 22px;
+  margin-top: 8px;
+}
+
+.sub-list li {
+  font-size: 0.93rem;
+  font-weight: normal;
+  color: var(--grey-mid);
+  margin-bottom: 5px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ================================
+   CARDS
+   ================================ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.scratch-card {
+  background: var(--grey-light);
+  border-left: 4px solid var(--accent);
+  padding: 24px 20px;
+}
+
+.scratch-card .card-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.scratch-card h3 {
+  font-family: 'Georgia', serif;
+  font-size: 1.15rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.scratch-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* ================================
+   TABLEAU
+   ================================ */
+.tableau-wrap {
+  width: 100%;
+  overflow: hidden;
+  border: 2px solid var(--accent);
+}
+
+/* ================================
+   VIDEO
+   ================================ */
+.video-wrap {
+  border: 2px solid var(--accent);
+  overflow: hidden;
+}
+
+/* ================================
+   BUTTON
+   ================================ */
+.scratch-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--white);
+  text-decoration: none;
+  padding: 14px 32px;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.scratch-btn:hover {
+  background: var(--accent-light);
+  color: var(--navy-dark);
+}
+
+.text-center-div {
+  text-align: center;
+}
+
+/* ================================
+   FOOTER
+   ================================ */
+.scratch-footer {
+  background-color: var(--navy-dark);
+  color: var(--grey-dark);
+  text-align: center;
+  padding: 24px 48px;
+  font-size: 0.85rem;
+  border-top: 2px solid var(--accent);
+  line-height: 1.8;
+  font-family: 'Arial', sans-serif;
+}
+
+.scratch-footer a {
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+.scratch-footer a:hover {
+  color: var(--white);
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 768px) {
+  .scratch-nav { padding: 0 20px; }
+  .nav-links { gap: 14px; }
+  .scratch-hero { padding: 48px 24px; }
+  .scratch-hero h1 { font-size: 3.5rem; }
+  .scratch-section { padding: 48px 24px; }
+  .two-col { grid-template-columns: 1fr; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
